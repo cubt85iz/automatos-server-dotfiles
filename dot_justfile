@@ -1,0 +1,8 @@
+set ignore_comments := true
+
+[private]
+default:
+  @just -l
+
+def hello_world:
+  echo "Hello, World!"
