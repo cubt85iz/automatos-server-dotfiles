@@ -1,4 +1,4 @@
-set ignore_comments := true
+set ignore-comments := true
 
 [private]
 default:
