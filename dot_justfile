@@ -1,26 +1,11 @@
 set ignore-comments := true
 
+# Recipes for shell operations
+import .just/shell.just
+
+# Recipes for ZFS operations
+import .just/zfs.just
+
 [private]
 default:
   @just -l
-
-# Retrieves the health of the specified pool
-get-pool-health pool:
-  zpool list -H -o health {{ pool }}
-
-# Install Starship shell prompt
-install-starship:
-  #!/usr/bin/env bash
-
-  set -euo pipefail
-
-  mkdir -p $HOME/.local/bin
-  curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir $HOME/.local/bin
-
-# Lists the disks in the specified pool
-show-disks pool:
-  zpool list -v -H -P {{ pool }} | grep /dev | awk -F '\t' '{printf "%s\t%s\n", $2, $11}'
-
-# Lists all faulted disks in the specified pool
-show-faulted-disks pool:
-  zpool list -v -H -P {{ pool }} | grep /dev | grep -v ONLINE | awk -F '\t' '{printf "%s\t%s\n", $2, $11}'
