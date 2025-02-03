@@ -4,5 +4,5 @@ follow-logs service:
 
 # Show logs for specified service
 show-logs service:
-  journalctl -xeu {{ service }}
+  journalctl -xeu {{ service }} -n 30000
 
