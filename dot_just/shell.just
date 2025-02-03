@@ -1,9 +1,3 @@
-set ignore-comments := true
-
-[private]
-default:
-  @just -l
-
 # Install Starship shell prompt
 install-starship:
   #!/usr/bin/env bash

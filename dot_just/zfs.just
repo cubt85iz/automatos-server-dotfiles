@@ -1,9 +1,3 @@
-set ignore-comments := true
-
-[private]
-default:
-  @just -l
-
 # Retrieves the health of the specified pool
 get-pool-health pool:
   zpool list -H -o health {{ pool }}
