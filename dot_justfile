@@ -3,6 +3,9 @@ set ignore-comments := true
 # Recipes for logging operations
 import ".just/log.just"
 
+# Recipes for network operations
+import ".just/network.just"
+
 # Recipes for shell operations
 import ".just/shell.just"
 
