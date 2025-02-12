@@ -9,6 +9,9 @@ import ".just/network.just"
 # Recipes for shell operations
 import ".just/shell.just"
 
+# Recipes for systemd operations
+import ".just/systemd.just"
+
 # Recipes for ZFS operations
 import ".just/zfs.just"
 
