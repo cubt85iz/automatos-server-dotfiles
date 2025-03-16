@@ -19,10 +19,10 @@ backup-postgres-db container database destination:
     [ ! -f "$DESTINATION" ] && [ -d "${DESTINATION%/*}" ] || mkdir -p "${DESTINATION%/*}"
 
     # Backup database to local data directory.
-    sudo podman exec -it $CONTAINER pg_dump -U postgres --clean --create --file="$DESTINATION" --if-exists --quote-all-identifiers $DATABASE
+    sudo podman exec -it $CONTAINER pg_dump -U postgres --clean --create --file="/var/lib/postgresql/data/$DATABASE.sql" --if-exists --quote-all-identifiers $DATABASE
 
     # Transfer database to destination
-    sudo podman cp "$CONTAINER":'$PGDATA'/"$DATABASE.sql" "$DESTINATION"
+    sudo podman cp "$CONTAINER":"/var/lib/postgresql/data/$DATABASE.sql" "$DESTINATION"
   else
     just -f "{{ justfile() }}" stderr "Container ($CONTAINER) is not running."
   fi
