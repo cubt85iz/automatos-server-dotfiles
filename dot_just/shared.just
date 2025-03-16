@@ -1,11 +1,11 @@
 # Outputs provided message to stderr in standardized format
 [private]
-stderr message level = 'ERROR':
+stderr message level="ERROR":
   >&2 echo "{{ level }}: {{ message }}"
 
 # Outputs provided message to stdout in standardized format
 [private]
-stdout message level = 'INFO':
+stdout message level="INFO":
   #! /usr/bin/env bash
 
   set -euox pipefail
