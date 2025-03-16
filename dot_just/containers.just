@@ -1,5 +1,31 @@
 import "shared.just"
 
+[private]
+get-container-status-helper container:
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  CONTAINER_PATH=(( container ))
+
+  CONTAINER_FILE=${CONTAINER_PATH##*/}
+  CONTAINER_NAME=${CONTAINER_FILE%.*}
+
+  # Get container health if available.
+  # Ref: https://github.com/casey/just/issues/971
+  CONTAINER_HEALTH=$(sudo podman inspect --format="{{{{.State.Health.Status}}" $CONTAINER_NAME 2>/dev/null || true)
+
+  # Colorize output
+  CONTAINER_ACTIVE=$(systemctl is-active $CONTAINER_NAME 2>/dev/null || true)
+  if [ "$CONTAINER_ACTIVE" == "active" ]; then
+    CONTAINER_STATUS=$(echo -n "${GREEN}${CONTAINER_ACTIVE}" && [ -z "$CONTAINER_HEALTH" ] && echo "${NC}" || echo " ($CONTAINER_HEALTH)${NC}")
+  else
+    CONTAINER_STATUS=$(echo -n "${YELLOW}${CONTAINER_ACTIVE}" && [ -z "$CONTAINER_HEALTH" ] && echo "${NC}" || echo " (${CONTAINER_HEALTH}${NC})")
+  fi
+  
+  just -f "{{ justfile() }}" stdout "$CONTAINER_NAME: $CONTAINER_STATUS"
+
+
 # Gets container status
 [group('Containers')]
 get-container-status container="all":
@@ -18,24 +44,11 @@ get-container-status container="all":
     readarray -t CONTAINERS < <(ls -1 /etc/containers/systemd/*.container)
 
     for CONTAINER_PATH in ${CONTAINERS[@]}; do
-      CONTAINER_FILE=${CONTAINER_PATH##*/}
-      CONTAINER_NAME=${CONTAINER_FILE%.*}
-
-      # Get container health if available.
-      # Ref: https://github.com/casey/just/issues/971
-      CONTAINER_HEALTH=$(sudo podman inspect --format="{{{{.State.Health.Status}}" $CONTAINER_NAME 2>/dev/null || true)
-
-      # Colorize output
-      CONTAINER_ACTIVE=$([ -z "$CONTAINER_HEALTH" ] && echo "${GREEN}active${NC}" || echo "${GREEN}active ($CONTAINER_HEALTH)${NC}")
-      if ! systemctl is-active $CONTAINER_NAME &> /dev/null; then
-        CONTAINER_ACTIVE="${YELLOW}inactive${NC}"
-      fi
-      
-      just -f "{{ justfile() }}" stdout "$CONTAINER_NAME: $CONTAINER_ACTIVE"
+      just get-container-status-helper "$CONTAINER_PATH"
     done
   else
     if [ -f "/etc/containers/systemd/{{ container }}.container" ]; then
-      just -f "{{ justfile() }}" stdout "$CONTAINER_NAME: $(systemctl is-active $CONTAINER_NAME)"
+      just get-container-status-helper "/etc/containers/systemd/{{ container }}.container"
     else
       just -f "{{ justfile() }}" stderr "The specified container ({{ container }}) does not exist."
       exit 1
