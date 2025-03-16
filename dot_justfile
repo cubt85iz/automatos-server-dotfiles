@@ -1,5 +1,8 @@
 set ignore-comments := true
 
+# Recipes for firewall operations
+import ".just/firewall.just"
+
 # Recipes for logging operations
 import ".just/log.just"
 

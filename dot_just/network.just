@@ -14,6 +14,11 @@ show-listen-ports:
 show-network-connections:
   nmcli -p --fields DEVICE,TYPE,STATE con show | grep -v podman
 
+[group('Networking')]
+[group('NFS')]
+show-nfs-exports:
+  showmount -e
+
 # Shows status for wireguard interface
 [group('Networking')]
 [group('Wireguard')]
