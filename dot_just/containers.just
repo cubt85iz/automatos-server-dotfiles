@@ -1,5 +1,6 @@
 import "shared.just"
 
+# Gets container status
 [group('Containers')]
 get-container-status container="all":
   #!/usr/bin/env bash
@@ -21,7 +22,8 @@ get-container-status container="all":
       CONTAINER_NAME=${CONTAINER_FILE%.*}
 
       # Get container health if available.
-      CONTAINER_HEALTH=$(sudo podman inspect --format="{{ .State.Health.Status }}" $CONTAINER_NAME || true)
+      # Ref: https://github.com/casey/just/issues/971
+      CONTAINER_HEALTH=$(sudo podman inspect --format="{{{{.State.Health.Status}}" $CONTAINER_NAME || true)
 
       # Colorize output
       CONTAINER_ACTIVE=$([ -z "$CONTAINER_HEALTH" ] && echo "${GREEN}active${NC}" || echo "${GREEN}active ($CONTAINER_HEALTH)${NC}")
