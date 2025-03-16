@@ -1,7 +1,7 @@
 # Outputs provided message to stderr in standardized format
 [private]
 stderr message level="ERROR":
-  >&2 echo "{{ level }}: {{ message }}"
+  >&2 echo "[{{ level }}] {{ message }}"
 
 # Outputs provided message to stdout in standardized format
 [private]
@@ -14,7 +14,7 @@ stdout message level="INFO":
   MESSAGE="{{ message }}"
 
   if [ "$LEVEL" != "ERROR" ]; then
-    echo "{{ level }}: {{ message }}"
+    echo "[{{ level }}] {{ message }}"
   else
     stderr "$MESSAGE"
   fi
