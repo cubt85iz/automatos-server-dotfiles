@@ -1,8 +1,10 @@
 # Retrieves the health of the specified pool
+[group('ZFS')]
 get-pool-health pool:
   zpool list -H -o health {{ pool }}
 
 # Lists the disks in the specified pool
+[group('ZFS')]
 show-disks pool:
   #!/usr/bin/env bash
 
@@ -15,5 +17,6 @@ show-disks pool:
   done
 
 # Lists all faulted disks in the specified pool
+[group('ZFS')]
 show-faulted-disks pool:
   @just show-disks {{ pool }} | grep -v ONLINE || echo "No faulted disks found for {{ pool }}."

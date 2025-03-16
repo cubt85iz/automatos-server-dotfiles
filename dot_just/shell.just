@@ -1,4 +1,5 @@
 # Install Starship shell prompt
+[group('Shell')]
 install-starship:
   #!/usr/bin/env bash
 
