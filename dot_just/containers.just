@@ -8,6 +8,11 @@ get-container-status-helper container:
 
   CONTAINER_PATH={{ container }}
 
+  # Colors
+  GREEN='\033[0;32m'
+  YELLOW='\033[0;33m'
+  NC='\033[0m'
+
   CONTAINER_FILE=${CONTAINER_PATH##*/}
   CONTAINER_NAME=${CONTAINER_FILE%.*}
 
@@ -34,11 +39,6 @@ get-container-status container="all":
   set -euo pipefail
 
   CONTAINER={{ container }}
-
-  # Colors
-  GREEN='\033[0;32m'
-  YELLOW='\033[0;33m'
-  NC='\033[0m'
 
   if [ "$CONTAINER" == "all" ]; then
     readarray -t CONTAINERS < <(ls -1 /etc/containers/systemd/*.container)
