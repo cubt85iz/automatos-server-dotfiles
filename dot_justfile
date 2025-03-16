@@ -1,5 +1,8 @@
 set ignore-comments := true
 
+# Recipes for container management
+import ".just/containers.just"
+
 # Recipes for dotfiles management
 import ".just/dotfiles.just"
 
