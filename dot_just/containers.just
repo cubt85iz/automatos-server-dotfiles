@@ -11,8 +11,8 @@ get-container-status container="all":
   if [ "$CONTAINER" == "all" ]; then
     readarray -t CONTAINERS < <(ls -1 /etc/containers/systemd/*.container)
 
-    for PATH in ${CONTAINERS[@]}; do
-      CONTAINER_FILE=${PATH##*/}
+    for CONTAINER_PATH in ${CONTAINERS[@]}; do
+      CONTAINER_FILE=${CONTAINER_PATH##*/}
       CONTAINER_NAME=${CONTAINER_FILE%.*}
       just -f "{{ justfile() }}" stdout "$CONTAINER_NAME: $(systemctl is-active $CONTAINER_NAME)"
     done
