@@ -10,8 +10,8 @@ stdout message level="INFO":
 
   set -euox pipefail
 
-  $LEVEL = "{{ level }}"
-  $MESSAGE = "{{ message }}"
+  $LEVEL="{{ level }}"
+  $MESSAGE="{{ message }}"
 
   if [ "$LEVEL" != "ERROR" ]; then
     echo "{{ level }}: {{ message }}"
