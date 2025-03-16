@@ -1,5 +1,32 @@
 import "shared.just"
 
+backup-postgres-db container database destination:
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  CONTAINER={{ container }}
+  DATABASE={{ database }}
+  DESTINATION={{ destination }}
+
+  if just is-container-active "$CONTAINER"; then
+    # If provided destination ends with a forward slash then assume the provided value is a
+    # directory and append the default backup file name. Otherwise, assume the provided value
+    # is a file.
+    DESTINATION=$([[ "$DESTINATION" =~ /.*\/$ ]] && echo "${DESTINATION}${DATABASE}.sql" || echo "$DESTINATION")
+
+    # Confirm file does not exist and necessary directories have been created before proceeding.
+    [ ! -f "$DESTINATION" ] && [ -d "${DESTINATION%/*}" ] || mkdir -p "${DESTINATION%/*}"
+
+    # Backup database to local data directory.
+    sudo podman exec -it $CONTAINER pg_dump -U postgres --clean --create --file="$DESTINATION" --if-exists --quote-all-identifiers $DATABASE
+
+    # Transfer database to destination
+    sudo podman cp "$CONTAINER":'$PGDATA'/"$DATABASE.sql" "$DESTINATION"
+  else
+    just -f "{{ justfile() }}" stderr "Container ($CONTAINER) is not running."
+  fi
+
 [private]
 get-container-status-helper container:
   #!/usr/bin/env bash
@@ -54,3 +81,7 @@ get-container-status container="all":
       exit 1
     fi
   fi
+
+[private]
+is-container-active container:
+  @sudo systemctl is-active {{ container }} &> /dev/null
