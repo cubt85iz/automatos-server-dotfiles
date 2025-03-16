@@ -21,7 +21,7 @@ show-interfaces:
 
 # Display information for a service
 [group('Firewall')]
-show-service {{ service }}:
+show-service service:
   sudo firewall-cmd --info-service={{ service }}
 
 # Display predefined services
@@ -31,5 +31,5 @@ show-services:
 
 # Display the zone for an interface
 [group('Firewall')]
-show-zone-for-interface {{ interface }}:
+show-zone-for-interface interface:
   sudo firewall-cmd --get-zone-of-interface={{ interface }}
