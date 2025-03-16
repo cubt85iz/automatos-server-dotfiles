@@ -22,7 +22,7 @@ get-container-status container="all":
 
       # Colorize output
       CONTAINER_ACTIVE="${GREEN}active${NC}"
-      if ! systemctl is-active $CONTAINER_NAME; then
+      if ! systemctl is-active $CONTAINER_NAME &> /dev/null; then
         CONTAINER_ACTIVE="${YELLOW}inactive${NC}"
       fi
       
