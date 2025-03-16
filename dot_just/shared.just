@@ -1,3 +1,6 @@
+# Use process substitution to use these colors in recipes.
+# source <(just -f "{{ justfile() }}" get-colors)
+[private]
 get-colors:
   #!/usr/bin/env bash
 
@@ -52,9 +55,3 @@ file_exists $FILE:
     stderr "ERROR: Provided file ($FILE) does not exist."
     exit 1
   fi
-
-
-colors-test:
-  #!/usr/bin/env bash
-  source <(just -f "{{ justfile() }}" get-colors)
-  echo -e "${RED}Am I red?${NC}"
