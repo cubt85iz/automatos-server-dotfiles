@@ -4,7 +4,7 @@ import "shared.just"
 get-container-status container="all":
   #!/usr/bin/env bash
 
-  set -euo pipefail
+  set -euox pipefail
 
   CONTAINER={{ container }}
 
@@ -21,10 +21,8 @@ get-container-status container="all":
       CONTAINER_NAME=${CONTAINER_FILE%.*}
 
       # Colorize output
-      CONTAINER_ACTIVE="$(systemctl is-active $CONTAINER_NAME)"
-      if [ "$CONTAINER_ACTIVE" == "active" ]; then
-        CONTAINER_ACTIVE="${GREEN}active${NC}"
-      else
+      CONTAINER_ACTIVE="${GREEN}active${NC}"
+      if ! systemctl is-active $CONTAINER_NAME; then
         CONTAINER_ACTIVE="${YELLOW}inactive${NC}"
       fi
       
