@@ -20,8 +20,11 @@ get-container-status container="all":
       CONTAINER_FILE=${CONTAINER_PATH##*/}
       CONTAINER_NAME=${CONTAINER_FILE%.*}
 
+      # Get container health if available.
+      CONTAINER_HEALTH=$(sudo podman ps --format="{{ .State.Health.Status }}" $CONTAINER_NAME || true)
+
       # Colorize output
-      CONTAINER_ACTIVE="${GREEN}active${NC}"
+      CONTAINER_ACTIVE=$([ -z "$CONTAINER_HEALTH" ] && echo "${GREEN}active${NC}" || echo "${GREEN}active ($CONTAINER_HEALTH)${NC}")
       if ! systemctl is-active $CONTAINER_NAME &> /dev/null; then
         CONTAINER_ACTIVE="${YELLOW}inactive${NC}"
       fi
