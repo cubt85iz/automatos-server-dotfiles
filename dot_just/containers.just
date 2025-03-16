@@ -6,7 +6,7 @@ get-container-status-helper container:
 
   set -euo pipefail
 
-  CONTAINER_PATH=(( container ))
+  CONTAINER_PATH={{ container }}
 
   CONTAINER_FILE=${CONTAINER_PATH##*/}
   CONTAINER_NAME=${CONTAINER_FILE%.*}
