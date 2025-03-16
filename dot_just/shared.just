@@ -8,7 +8,7 @@ stderr message level="ERROR":
 stdout message level="INFO":
   #! /usr/bin/env bash
 
-  set -euox pipefail
+  set -euo pipefail
 
   LEVEL="{{ level }}"
   MESSAGE="{{ message }}"

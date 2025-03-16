@@ -4,7 +4,7 @@ import "shared.just"
 get-container-status container="all":
   #!/usr/bin/env bash
 
-  set -euox pipefail
+  set -euo pipefail
 
   CONTAINER={{ container }}
 
