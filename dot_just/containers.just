@@ -38,9 +38,7 @@ get-container-status-helper container:
   CONTAINER_PATH={{ container }}
 
   # Colors
-  GREEN='\033[0;32m'
-  YELLOW='\033[0;33m'
-  NC='\033[0m'
+  source <(just -f "{{ justfile() }}" get-colors)
 
   CONTAINER_FILE=${CONTAINER_PATH##*/}
   CONTAINER_NAME=${CONTAINER_FILE%.*}
