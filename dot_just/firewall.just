@@ -3,10 +3,10 @@
 disable-logging:
   sudo firewall-cmd --set-log-denied=off
 
-# Enable logging of denials
+# Enable logging of denials (all|unicast|broadcast|multicast|off)
 [group('Firewall')]
-enable-logging:
-  sudo firewall-cmd --set-log-denied=all
+enable-logging type="all":
+  sudo firewall-cmd --set-log-denied={{ type }}
 
 # List all active zones
 [group('Firewall')]

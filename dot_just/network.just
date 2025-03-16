@@ -14,6 +14,7 @@ show-listen-ports:
 show-network-connections:
   nmcli -p --fields DEVICE,TYPE,STATE con show | grep -v podman
 
+# Show exported paths for NFS
 [group('Networking')]
 [group('NFS')]
 show-nfs-exports:
