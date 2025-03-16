@@ -1,5 +1,7 @@
 import "shared.just"
 
+# Backs up the specified postgres database
+[group('Containers')]
 backup-postgres-db container database destination:
   #!/usr/bin/env bash
 
