@@ -23,7 +23,7 @@ get-container-status container="all":
 
       # Get container health if available.
       # Ref: https://github.com/casey/just/issues/971
-      CONTAINER_HEALTH=$(sudo podman inspect --format="{{{{.State.Health.Status}}" $CONTAINER_NAME || true)
+      CONTAINER_HEALTH=$(sudo podman inspect --format="{{{{.State.Health.Status}}" $CONTAINER_NAME 2>/dev/null || true)
 
       # Colorize output
       CONTAINER_ACTIVE=$([ -z "$CONTAINER_HEALTH" ] && echo "${GREEN}active${NC}" || echo "${GREEN}active ($CONTAINER_HEALTH)${NC}")
