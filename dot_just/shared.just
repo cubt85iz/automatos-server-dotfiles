@@ -42,7 +42,7 @@ stdout message level="INFO":
   if [ "$LEVEL" != "ERROR" ]; then
     echo -e "[{{ level }}] {{ message }}"
   else
-    stderr "$MESSAGE"
+    just -f "{{ justfile() }}" stderr "$MESSAGE"
   fi
 
 [private]
@@ -52,6 +52,6 @@ file_exists $FILE:
   set -euox pipefail
 
   if [ ! -e "$FILE" ]; then
-    stderr "ERROR: Provided file ($FILE) does not exist."
+    just -f "{{ justfile() }}" stderr "Provided file ($FILE) does not exist."
     exit 1
   fi
