@@ -19,8 +19,10 @@ show-disks pool:
       ONLINE)
         DEVICE_HEALTH=$(echo "${GREEN}${DEVICE_HEALTH}${NC}")
         ;;
-      DEGRADED)
+      DEGRADED|RESILVERING)
         DEVICE_HEALTH=$(echo "${YELLOW}${DEVICE_HEALTH}${NC}")
+        ;;
+      SPARE)
         ;;
       *)
         DEVICE_HEALTH=$(echo "${RED}${DEVICE_HEALTH}${NC}")
