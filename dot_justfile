@@ -67,7 +67,7 @@ stderr message level="ERROR":
 
 # Outputs provided message to stdout in standardized format
 [private]
-stdout message level="INFO":
+stdout message level="":
   #! /usr/bin/env bash
 
   set -euo pipefail
@@ -75,10 +75,14 @@ stdout message level="INFO":
   LEVEL="{{ level }}"
   MESSAGE="{{ message }}"
 
-  if [ "$LEVEL" != "ERROR" ]; then
-    echo -e "[{{ level }}] {{ message }}"
+  if [ -n "$LEVEL" ]; then
+    if [ "$LEVEL" != "ERROR" ]; then
+      echo -e "[$LEVEL] $MESSAGE"
+    else
+      just stderr "$MESSAGE"
+    fi
   else
-    just stderr "$MESSAGE"
+    echo -e "$MESSAGE"
   fi
 
 # Determines if the specified file exists.
