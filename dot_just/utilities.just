@@ -1,5 +1,3 @@
-import "shared.just"
-
 # Adds all recipes to .bashrc.d file
 [group('Utilities')]
 add-aliases-for-recipes:
@@ -24,4 +22,4 @@ add-aliases-for-recipes:
     fi
   done
 
-  just -f "{{ justfile() }}" stdout "Aliases added for just recipes. Execute 'source $HOME/.bashrc.d/just-aliases.sh' to use them now."
+  just "Aliases added for just recipes. Execute 'source $HOME/.bashrc.d/just-aliases.sh' to use them now."

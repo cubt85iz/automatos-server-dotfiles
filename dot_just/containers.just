@@ -1,7 +1,6 @@
-import "shared.just"
-
 # Backs up the specified postgres database
 [group('Containers')]
+[group('Work-in-Progress')]
 backup-postgres-db container database destination:
   #!/usr/bin/env bash
 
@@ -26,7 +25,7 @@ backup-postgres-db container database destination:
     # Transfer database to destination
     sudo podman cp "$CONTAINER":"/var/lib/postgresql/data/$DATABASE.sql" "$DESTINATION"
   else
-    just -f "{{ justfile() }}" stderr "Container ($CONTAINER) is not running."
+    just stderr "Container ($CONTAINER) is not running."
   fi
 
 [private]
@@ -38,7 +37,7 @@ get-container-status-helper container:
   CONTAINER_PATH={{ container }}
 
   # Colors
-  source <(just -f "{{ justfile() }}" get-colors)
+  source <(just get-colors)
 
   CONTAINER_FILE=${CONTAINER_PATH##*/}
   CONTAINER_NAME=${CONTAINER_FILE%.*}
@@ -55,7 +54,7 @@ get-container-status-helper container:
     CONTAINER_STATUS=$(echo -n "${YELLOW}${CONTAINER_ACTIVE}" && [ -z "$CONTAINER_HEALTH" ] && echo "${NC}" || echo " (${CONTAINER_HEALTH}${NC})")
   fi
   
-  just -f "{{ justfile() }}" stdout "$CONTAINER_NAME: $CONTAINER_STATUS"
+  just stdout "$CONTAINER_NAME: $CONTAINER_STATUS"
 
 
 # Gets container status
@@ -77,7 +76,7 @@ get-container-status container="all":
     if [ -f "/etc/containers/systemd/{{ container }}.container" ]; then
       just get-container-status-helper "/etc/containers/systemd/{{ container }}.container"
     else
-      just -f "{{ justfile() }}" stderr "The specified container ({{ container }}) does not exist."
+      just stderr "The specified container ({{ container }}) does not exist."
       exit 1
     fi
   fi

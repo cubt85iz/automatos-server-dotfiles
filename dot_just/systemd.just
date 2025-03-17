@@ -1,5 +1,3 @@
-import "shared.just"
-
 # Generates svg file showing service dependencies
 [group('Services')]
 generate-dependency-svg:
@@ -9,7 +7,7 @@ generate-dependency-svg:
 
   TIMESTAMP=$(date +%Y%m%d-%H%M%S)
   sudo systemd-analyze dot | dot -Tsvg > ~/systemd-dependencies-$TIMESTAMP.svg
-  just -f "{{ justfile() }}" stdout "SVG file output to ~/systemd-dependencies-$TIMESTAMP.svg"
+  just stdout "SVG file output to ~/systemd-dependencies-$TIMESTAMP.svg"
 
 # Generates svg file showing startup times
 [group('Services')]
@@ -20,9 +18,9 @@ generate-startup-svg:
 
   TIMESTAMP=$(date +%Y%m%d-%H%M%S)
   sudo systemd-analyze plot > ~/systemd-startup-$TIMESTAMP.svg
-  just -f "{{ justfile() }}" stdout "SVG file output to ~/systemd-startup-$TIMESTAMP.svg"
+  just "SVG file output to ~/systemd-startup-$TIMESTAMP.svg"
 
 # Show the time it takes to start services
 [group('Services')]
 show-startup-times:
-  sudo systemd-analyze blame
+  @sudo systemd-analyze blame

@@ -1,9 +1,7 @@
-import "shared.just"
-
 # Retrieves the health of the specified pool
 [group('ZFS')]
 get-pool-health pool:
-  zpool list -H -o health {{ pool }}
+  @zpool list -H -o health {{ pool }}
 
 # Lists the disks in the specified pool
 [group('ZFS')]
@@ -13,7 +11,7 @@ show-disks pool:
   set -euo pipefail
 
   # Colors
-  source <(just -f "{{ justfile() }}" get-colors)
+  source <(just get-colors)
 
   for DEVICE in $(zpool list -vHP {{ pool }} | grep /dev | awk -F '\t' '{printf "%s\n", $2}'); do
     DEVICE_HEALTH=$(zpool list -vHP tank | grep $DEVICE | awk -F '\t' '{printf "%s\n", $11}')
