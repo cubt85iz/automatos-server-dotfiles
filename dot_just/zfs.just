@@ -29,7 +29,7 @@ show-disks pool:
         ;;
     esac
     PARENT_DEVICE=/dev/$(lsblk -no "PKNAME" $DEVICE)
-    echo "$DEVICE $(lsblk -n -r -d -o "MODEL,SERIAL" $PARENT_DEVICE) $DEVICE_HEALTH"
+    echo -e "$DEVICE_HEALTH $DEVICE $(lsblk -n -r -d -o "MODEL,SERIAL" $PARENT_DEVICE)"
   done
 
 # Lists all faulted disks in the specified pool
