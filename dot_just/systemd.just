@@ -18,7 +18,7 @@ generate-startup-svg:
 
   TIMESTAMP=$(date +%Y%m%d-%H%M%S)
   sudo systemd-analyze plot > ~/systemd-startup-$TIMESTAMP.svg
-  just "SVG file output to ~/systemd-startup-$TIMESTAMP.svg"
+  just stdout "SVG file output to ~/systemd-startup-$TIMESTAMP.svg"
 
 # Show the time it takes to start services
 [group('Services')]
