@@ -1,7 +1,17 @@
 # Retrieves the health of the specified pool
 [group('ZFS')]
-get-pool-health pool:
-  @zpool list -H -o health {{ pool }}
+get-pool-health pool="":
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  POOL="{{ pool }}"
+
+  if [ -n "$POOL" ]; then
+    zpool list -H -o health $POOL
+  else
+    zpool list -H -o name,health
+  fi
 
 # Lists the disks in the specified pool
 [group('ZFS')]
@@ -10,11 +20,13 @@ show-disks pool:
 
   set -euo pipefail
 
+  POOL="{{ pool }}"
+
   # Colors
   source <(just get-colors)
 
-  for DEVICE in $(zpool list -vHP {{ pool }} | grep /dev | awk -F '\t' '{printf "%s\n", $2}'); do
-    DEVICE_HEALTH=$(zpool list -vHP tank | grep $DEVICE | awk -F '\t' '{printf "%s\n", $11}')
+  for DEVICE in $(zpool list -vHP $POOL | grep /dev | awk -F '\t' '{printf "%s\n", $2}'); do
+    DEVICE_HEALTH=$(zpool list -vHP $POOL | grep $DEVICE | awk -F '\t' '{printf "%s\n", $11}')
     case $DEVICE_HEALTH in
       ONLINE)
         DEVICE_HEALTH=$(echo "${GREEN}${DEVICE_HEALTH}${NC}")
@@ -35,4 +47,4 @@ show-disks pool:
 # Lists all faulted disks in the specified pool
 [group('ZFS')]
 show-faulted-disks pool:
-  @just show-disks {{ pool }} | grep -v ONLINE || echo "No faulted disks found for {{ pool }}."
+  @just show-disks {{ pool }} | grep -v ONLINE || just stdout "No faulted disks found for {{ pool }}."
