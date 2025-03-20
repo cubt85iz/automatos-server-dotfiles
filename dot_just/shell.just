@@ -4,7 +4,7 @@ enable-starship:
 
   set -euo pipefail
 
-  cat > $HOME/.bashrc.d/99-starship.sh <<EOF
+  cat > $HOME/.bashrc.d/99-starship.sh <<'EOF'
   #!/usr/bin/env bash
 
   eval "$(starship init bash)"
