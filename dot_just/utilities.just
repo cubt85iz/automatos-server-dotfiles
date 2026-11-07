@@ -23,3 +23,15 @@ add-aliases-for-recipes:
   done
 
   just "Aliases added for just recipes. Execute 'source $HOME/.bashrc.d/just-aliases.sh' to use them now."
+
+# Display directory tree using an ephemeral container
+[linux]
+[no-cd]
+[group('Utilities')]
+tree:
+  #!/usr/bin/env bash
+  podman run --rm -it \
+    --volume "${PWD}:/workspace:z" \
+    --workdir /workspace \
+    alpine \
+    sh -c "apk add --no-cache tree > /dev/null && tree"
