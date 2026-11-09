@@ -1,4 +1,4 @@
-# ~/.bashrc.d/functions.sh
+# ~/.bashrc.d/00-functions.sh
 #
 # Custom shell functions, sourced by ~/.bashrc.
 #
